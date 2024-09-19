@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Kevin CAZAL, Pierre ROBERT" />
+  <title>Pre-pool</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <base target="_blank">
+
+  <style type="text/css">
+  /*
+    HEADER
+  */
+
+  header {
+    height:500px;
+    background: url("img/cover_preMSC.jpg") right bottom;
+    background-size: 45%;
+    margin:0px;
+    color: white;
+  }
+
+  header h1 {
+    padding: 200px 0 0 30px;
+    text-transform: uppercase;
+    color: white;  
+    font-size: 60px;
+    margin:  0;
+  }
+
+  header p.subtitle {
+    padding: 170px 0 0 30px;
+    margin:  0px;
+    padding-top: 0px;
+    text-transform: uppercase;
+    font-size: 20px;
+  }
+
+  header p.author {
+    display: none;
+  }
+
+
+
+
+  /*
+    BLOCKS
+  */
+
+  .note {
+      border: solid 1px rgb(200, 200, 200);
+      box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+      border-radius:10px;    
+      padding: 10px 10px 10px 20px;
+      margin:30px 20px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      background-color:rgba(255, 0, 0, 0.1);    
+  }
+  .note:before {
+    content: url(img/icon_note_small.png);
+    margin-top:-35px;
+    margin-left:-35px;
+    margin-bottom: -20px;
+  }
+
+  .warning {
+      border: solid 1px rgb(200, 200, 200);
+      box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+      border-radius:10px;
+      margin:30px 20px 20px 20px;
+      background-color: rgba(88, 147, 193, 0.1);
+      padding: 10px 10px 10px 20px;
+      display: flex;
+      flex-direction: column;
+  }
+  .warning:before {
+    content: url(img/icon_warning_small.png);
+    margin-top:-35px;
+    margin-left:-35px;
+    margin-bottom: -20px;
+  }
+
+  .info {
+      border: solid 1px rgb(200, 200, 200);
+      box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+      border-radius:10px;    
+      background-color: rgb(255, 255, 255);
+      padding: 10px 10px 10px 20px;
+      margin:30px 20px 20px 20px;
+      display: flex;
+      flex-direction: column;
+  }
+  .info:before {
+    content: url(img/icon_info_small.png);
+    margin-top:-35px;
+    margin-left:-35px;
+    margin-bottom: -20px;
+  }
+
+  .tip {
+      border: solid 1px rgb(200, 200, 200);
+      box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+      border-radius:10px;    
+      background-color: rgba(240, 220, 154, 0.1);
+      padding: 10px 10px 10px 20px;
+      margin:30px 20px 20px 20px;
+      display: flex;
+      flex-direction: column;
+  }
+  .tip:before {
+    content: url(img/icon_tip_small.png);
+    margin-top:-35px;
+    margin-left:-35px;
+    margin-bottom: -20px;
+  }
+
+  .terminal {
+      border: solid 1px rgb(200, 200, 200);
+      box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+      border-radius:10px;    
+      background-color: rgba(240, 220, 154, 0.1);
+      padding: 10px 10px 10px 20px;
+      margin:30px 20px 20px 20px;
+      display: flex;
+      flex-direction: column;
+  }
+  .terminal:before {
+    content: url(img/icon_terminal_small.png);
+    margin-top:-35px;
+    margin-left:-35px;
+    margin-bottom: -20px;
+  }
+
+  /*
+    QUOTE
+  */
+
+  .quote {
+      border-left: solid 3px rgb(140, 140, 140);
+      border-radius:0 10px 10px 0;    
+      padding: 0px 0px 0px 20px;
+      margin:30px 40px 20px 40px;
+      display: flex;
+      flex-direction: column;
+      background-color:rgba(140, 140, 140, 0.1); 
+      position: relative;   
+  }
+
+  .quote author {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      font-weight: bold;
+      font-style: normal;
+  }
+  .quote author:before {
+    content: '-- ';
+  }
+  .quote author:after {
+    content: '-- ';
+  }
+
+  /*
+    COLUMNS
+  */
+
+  div.column-33 {
+    width:  31%;
+    display: inline-block;
+    min-width: 120px;
+    vertical-align: middle;
+    padding-left:  15px;
+  }
+  div.column-50 {
+    width:  48%;
+    display: inline-block;
+    min-width: 120px;
+    vertical-align: middle;
+    padding-left:  15px;
+  }
+  div.column-66 {
+    width:  65%;
+    display: inline-block;
+    min-width: 120px;
+    vertical-align: middle;
+    padding-left:  15px;
+  }
+  div.column {
+    display: inline-block;
+    min-width: 120px;
+    vertical-align: middle;
+    padding-left:  15px;
+  }
+  div.columns {
+    padding-left:  -15px;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+
+
+  /*
+    FOOTER
+  */
+
+  div.footer {
+    background: #FFFFFF url("img/footer_preMSC.jpg") no-repeat;
+    height:  215px;
+  }
+
+
+
+
+  /*
+    GENERIC
+  */
+
+  html {
+    font-size: 100%;
+    overflow-y: scroll;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+
+  body {
+    color: #444;
+    font-family: Montserrat-thin, sans-serif;
+    font-size: 12px;
+    margin: auto;
+    padding:  0 10px 0 10px;
+    max-width: 800px;
+    background: #fefefe;
+  }
+
+  a {
+    color: #016bb3;
+
+  }
+
+  a:visited {
+    color: #0b0080;
+  }
+
+  a:hover {
+    color: #06e;
+  }
+
+  a:active {
+    color: #faa700;
+  }
+
+  a:focus {
+    outline: thin dotted;
+  }
+
+  *::-moz-selection {
+    background: rgba(255, 255, 0, 0.3);
+    color: #000;
+  }
+
+  *::selection {
+    background: rgba(255, 255, 0, 0.3);
+    color: #000;
+  }
+
+  a::-moz-selection {
+    background: rgba(255, 255, 0, 0.3);
+    color: #016bb3;
+  }
+
+  a::selection {
+    background: rgba(255, 255, 0, 0.3);
+    color: #016bb3;
+  }
+
+  p {
+    margin: 1em 0;
+  }
+
+  img {
+    max-width: 100%;
+    border-radius: 10px;
+  }
+
+  h1 {
+    color: #016bb3;
+    line-height: 100%;
+    margin-top: 2em;
+    font-weight: normal;
+    font-size: 3em;
+  }
+
+  h2 {
+    color: #016bb3;
+    line-height: 110%;
+    margin-top: 2em;
+    font-weight: bold;
+  }
+
+  h3, h4, h5, h6 {
+    color: #111;
+    line-height: 125%;
+    margin-top: 2em;
+    font-weight: normal;
+  }
+
+
+  blockquote {
+    color: #666666;
+    margin: 0;
+    padding-left: 3em;
+    border-left: 0.5em #EEE solid;
+  }
+
+  hr {
+    display: block;
+    height: 2px;
+    border: 0;
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #eee;
+    margin: 1em 0;
+    padding: 0;
+  }
+
+  pre, code, kbd, samp {
+    color: #000;
+    font-family: monospace, monospace;
+    _font-family: 'courier new', monospace;
+    font-size: 0.98em;
+  }
+
+  pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  b, strong {
+    font-weight: bold;
+  }
+
+  dfn {
+    font-style: italic;
+  }
+
+  ins {
+    background: #ff9;
+    color: #000;
+    text-decoration: none;
+  }
+
+  mark {
+    background: #ff0;
+    color: #000;
+    font-style: italic;
+    font-weight: bold;
+  }
+
+  sub, sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+  }
+
+  sup {
+    top: -0.5em;
+  }
+
+  sub {
+    bottom: -0.25em;
+  }
+
+  ul, ol {
+    margin: 1em 0;
+    padding: 0 0 0 2em;
+  }
+
+  li p:last-child {
+    margin-bottom: 0;
+  }
+
+  ul ul, ol ol {
+    margin: .3em 0;
+  }
+
+  dl {
+    margin-bottom: 1em;
+  }
+
+  dt {
+    font-weight: bold;
+    margin-bottom: .8em;
+  }
+
+  dd {
+    margin: 0 0 .8em 2em;
+  }
+
+  dd:last-child {
+    margin-bottom: 0;
+  }
+
+  img {
+    border: 0;
+    -ms-interpolation-mode: bicubic;
+    vertical-align: middle;
+  }
+
+  figure {
+    display: block;
+    text-align: center;
+    margin: 1em 0;
+  }
+
+  figure img {
+    border: none;
+    margin: 0 auto;
+  }
+
+  figcaption {
+    font-size: 0.8em;
+    font-style: italic;
+    margin: 0 0 .8em;
+  }
+
+  table {
+    margin-bottom: 2em;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-spacing: 0;
+    border-collapse: collapse;
+  }
+
+  table th {
+    padding: .2em 1em;
+    background-color: #eee;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+  }
+
+  table td {
+    padding: .2em 1em;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    vertical-align: top;
+  }
+
+  .author {
+    font-size: 1.2em;
+    text-align: center;
+  }
+
+  @media only screen and (min-width: 480px) {
+    body {
+      font-size: 14px;
+    }
+  }
+  @media only screen and (min-width: 768px) {
+    body {
+      font-size: 16px;
+    }
+  }
+  @media print {
+    * {
+      background: transparent !important;
+      color: black !important;
+      filter: none !important;
+      -ms-filter: none !important;
+    }
+
+    a, a:visited {
+      text-decoration: underline;
+    }
+
+    hr {
+      height: 1px;
+      border: 0;
+      border-bottom: 1px solid black;
+    }
+
+    a[href]:after {
+      content: " (" attr(href) ")";
+    }
+
+    abbr[title]:after {
+      content: " (" attr(title) ")";
+    }
+
+    .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+      content: "";
+    }
+
+    pre, blockquote {
+      border: 1px solid #999;
+      padding-right: 1em;
+      page-break-inside: avoid;
+    }
+
+    tr, img {
+      page-break-inside: avoid;
+    }
+
+    img {
+      max-width: 100% !important;
+    }
+
+    @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+  }
+
+    @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+  }
+
+    p, h2, h3 {
+      orphans: 3;
+      widows: 3;
+    }
+
+    h2, h3 {
+      page-break-after: avoid;
+    }
+  }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Pre-pool</h1>
+<p class="subtitle">Day 01</p>
+<p class="author">Kevin CAZAL, Pierre ROBERT</p>
+</header>
+<p>Welcome to your very first pool!</p>
+<p>You will learn a lot of unexpected competencies (technical, human, organizational),.. during this magic period. It may be hard sometimes, or even frustrating, but one day, we will laugh about it and be so proud of yourself!</p>
+<div class="tip">
+<p>Keep cool, this seminar is not evaluated!<br />
+Still, it is of prime importance and should be considered very seriously. Very.<br />
+The rest of the year would flow more smoothly in case of a successful pool!</p>
+</div>
+<p>For each day, do not skip any task. They must be realized the ones after the others. No problem if you don’t complete all the tasks. The last one are calibrated to be hard enough to be done by a happy few only. However, you should be able to understand and success the carrot tasks.</p>
+<div class="columns">
+<div class="column" style="width:35%;">
+<p> </p>
+</div><div class="column" style="width:08%;">
+<figure>
+<img src="carrot.jpg" title="carrot" style="width:100.0%" alt="" /><figcaption>level1</figcaption>
+</figure>
+</div><div class="column" style="width:08%;">
+<figure>
+<img src="1pepper.jpg" title="1 pepper" style="width:100.0%" alt="" /><figcaption>level2</figcaption>
+</figure>
+</div><div class="column" style="width:08%;">
+<figure>
+<img src="3peppers.jpg" title="3 peppers" style="width:100.0%" alt="" /><figcaption>level3</figcaption>
+</figure>
+</div><div class="column" style="width:35%;">
+<p> </p>
+</div>
+</div>
+<p> </p>
+<div class="info">
+<p><strong>GAME</strong><br />
+In addition to your daily tasks, you are encouraged to go as far as possible in a game/challenge/CTF.<br />
+Work on it as soon as you have a bit of time, or whenever you need a break in you day!<br />
+These games last for 2 days, and you will learn a lot doing them!</p>
+<p>If you have some time today and want to give it a try, you can play with <a href="https://overthewire.org/wargames/bandit/bandit0.html"><strong>bandit wargame</strong></a>.</p>
+</div>
+<p> </p>
+<figure>
+<img src="CTF.jpeg" title="capture the flag" style="width:40.0%" alt="" /><figcaption>CTF</figcaption>
+</figure>
+<h2 id="working-environment">Working environment</h2>
+<div class="columns">
+<div class="column" style="width:95%;">
+<h3 id="task-1.1">Task 1.1</h3>
+</div><div class="column" style="width:04%;">
+<figure>
+<img src="carrot.jpg" title="carrot" style="width:100.0%" alt="" /><figcaption>level1</figcaption>
+</figure>
+</div>
+</div>
+<p>Let’s start by ensuring (almost) everything is in place on your computer for the coming year.</p>
+<p>Here is the checklist:</p>
+<ul>
+<li><p>A working computer with the following recommendation:</p>
+<ul>
+<li>A recent x86_64 processor (i3 equivalent or above) ;</li>
+<li>8 Gb of RAM (or above) ;</li>
+<li>5Ghz compatible Wireless card ;</li>
+<li>Webcam and Headset ;</li>
+<li>256 Gb Solid State Storage (or more).</li>
+</ul></li>
+<li><p>A UNIX-like operating system:</p>
+<ul>
+<li>The latest stable version of Fedora GNU/Linux with the appropriate packages ;</li>
+<li>WSL (Windows Subsystem for Linux) is NOT recommended ;</li>
+<li>A Virtual Machine is NOT recommended ;</li>
+<li>MacOSX is NOT recommended.</li>
+</ul></li>
+</ul>
+<div class="info">
+<p>Follow the instruction of your pedagogical team to install Fedora and its packages.</p>
+</div>
+<div class="tip">
+<p>You can check if everything is OK with the wonderful tool available along with this subject.</p>
+</div>
+<p> </p>
+<figure>
+<img src="check.png" title="check" style="width:25.0%" alt="" /><figcaption>check</figcaption>
+</figure>
+<div class="columns">
+<div class="column" style="width:95%;">
+<h3 id="task-1.2">Task 1.2</h3>
+</div><div class="column" style="width:04%;">
+<figure>
+<img src="carrot.jpg" title="carrot" style="width:100.0%" alt="" /><figcaption>level1</figcaption>
+</figure>
+</div>
+</div>
+<p>Watch those 3 dense 100-second-videos from the <a href="https://www.youtube.com/c/Fireship">Fireship Youtube channel</a>:</p>
+<ul>
+<li><p><a href="https://www.youtube.com/watch?v=rrB13utjYV4">Linux in 100 seconds</a> ;</p></li>
+<li><p><a href="https://www.youtube.com/watch?v=42iQKuQodW4">Linux Directories Explained in 100 Seconds</a> ;</p></li>
+<li><p><a href="https://www.youtube.com/watch?v=I4EWvMFj37g">Bash in 100 Seconds</a>.</p></li>
+</ul>
+<p>You probably did not understand everything covered in these videos…<br />
+Discuss with your neighbors the points you understood and the shady ones, and try to collectively shed light on some Linux core concepts.</p>
+<div class="tip">
+<p>You may watch an unlimited number of videos to learn how to use Linux or how to code, but nothing is better than your own experience.</p>
+</div>
+<p> </p>
+<figure>
+<img src="meme-experience.jpg" title="meme-experience" style="width:84.0%" alt="" /><figcaption>meme-experience</figcaption>
+</figure>
+<div class="columns">
+<div class="column" style="width:95%;">
+<h3 id="task-1.3">Task 1.3</h3>
+</div><div class="column" style="width:04%;">
+<figure>
+<img src="carrot.jpg" title="carrot" style="width:100.0%" alt="" /><figcaption>level1</figcaption>
+</figure>
+</div>
+</div>
+<p>Connect to the IONIS network and:</p>
+<ul>
+<li><p>open <a href="https://gandalf.epitech.eu">your intranet page</a> and check your schedule for this week ;</p></li>
+<li><p>open <a href="https://office365.org">the Office365 page</a> and check your emails ;</p></li>
+<li><p>open <a href="https://www.python.org/about/help/">the Python help page</a> ;</p></li>
+<li><p>open the Microsoft Teams application ;</p></li>
+<li><p>browse your local directory in a file manager ;</p></li>
+<li><p>type <code>pwd</code> into a terminal emulator.</p></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:95%;">
+<h3 id="task-1.4">Task 1.4</h3>
+</div><div class="column" style="width:04%;">
+<figure>
+<img src="carrot.jpg" title="carrot" style="width:100.0%" alt="" /><figcaption>level1</figcaption>
+</figure>
+</div>
+</div>
+<p>Can you guess why it’s important to use at least one terminal text editor?</p>
+<ul>
+<li><strong>VSCode</strong><br />
+Install Visual Studio Code. Once installed, use it to create a file.<br />
+In this file, write “VSCode is a very practical and user-friendly IDE.”, save this file somewhere on your computer and exit VSCode.</li>
+</ul>
+<div class="tip">
+<p>Do not save your file into a junk folder.<br />
+Save it into a specific well-named and well-organized folder.</p>
+</div>
+<ul>
+<li><p><strong>Emacs</strong><br />
+In your terminal emulator, use the Emacs editor to create a file.<br />
+In this file, write “Emacs is a more advanced text editor working both in a terminal and in a graphical environment.”, save this file somewhere on your computer and exit Emacs.</p></li>
+<li><p><strong>Vim</strong><br />
+In your terminal emulator, use the Vim editor to create a file.<br />
+In this file, write “Vim is the best text editor working in a terminal.”, save this file somewhere on your computer and exit Vim.</p></li>
+<li><p><strong>Nano</strong><br />
+In your terminal emulator, use the Nano editor to create a file.<br />
+In this file, write “Nano a simple text editor in your terminal.”, save this file somewhere on your computer and exit Nano.<br />
+ </p></li>
+</ul>
+<figure>
+<img src="meme-editors.jpg" title="meme-editors" style="width:45.0%" alt="" /><figcaption>meme-editors</figcaption>
+</figure>
+<h2 id="challenge">CHALLENGE</h2>
+<div class="tip">
+<p>Everyday you will get an optimisation exercise. You should compare your productions with others and discuss the pros and cons of each solution.<br />
+The best answers could be presented publicly.</p>
+</div>
+<p>Today’s challenge is pretty easy, it’s a typing test focused on code writing:</p>
+<ul>
+<li><p>Go to <a href="https://10fastfingers.com/typing-test/english#">10fastfingers.com</a> and/od <a href="https://monkeytype.com/">monkeytype.com</a>;</p></li>
+<li><p>Aim for the best score in term of WPM (Words Per Minutes) and Accuracy.</p></li>
+</ul>
+<p> </p>
+<div class="tip">
+<p>You don’t need to break your keyboard on the very first day.</p>
+</div>
+<p> <br />
+ </p>
+<figure>
+<img src="challenge.jpg" title="challenges" style="width:42.0%" alt="" /><figcaption>challenge</figcaption>
+</figure>
+<figure>
+<img src="challenge2.png" title="challenge" style="width:42.0%" alt="" /><figcaption>challenge</figcaption>
+</figure>
+<h2 id="shell">Shell</h2>
+<div class="columns">
+<div class="column" style="width:95%;">
+<h3 id="task-2.1">Task 2.1</h3>
+</div><div class="column" style="width:04%;">
+<figure>
+<img src="carrot.jpg" title="carrot" style="width:100.0%" alt="" /><figcaption>level1</figcaption>
+</figure>
+</div>
+</div>
+<p>The shell is a program running inside your terminal.<br />
+It allows you to browse your files and directories on your computer, as well as running other programs using text-based commands.</p>
+<p>Find the proper commands in order to:</p>
+<ul>
+<li>locate your “Home” directory ;</li>
+<li>list the content of your Downloads directory ;</li>
+<li>create a new directory named “introduction_seminar” inside your “Home” directory ;</li>
+<li>create a new directory named “day01” inside the “introduction_seminar” directory ;</li>
+<li>copy this file (named “T-PRE-500_day01.pdf”) in the “day01” directory.</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:95%;">
+<h3 id="task-2.2">Task 2.2</h3>
+</div><div class="column" style="width:04%;">
+<figure>
+<img src="carrot.jpg" title="carrot" style="width:100.0%" alt="" /><figcaption>level1</figcaption>
+</figure>
+</div>
+</div>
+<p>Do you feel comfortable with the Linux shell?</p>
+<ul>
+<li>If you do not:
+<ul>
+<li>Go to: <a href="https://overthewire.org/wargames/bandit/">https://overthewire.org/wargames/bandit/</a></li>
+<li>Take some time to experiment and exchange with your colleagues</li>
+</ul></li>
+<li>Else:
+<ul>
+<li>Go to: <a href="https://overthewire.org/wargames/bandit/">https://overthewire.org/wargames/bandit/</a></li>
+<li>Help your colleagues to understand how the shell works</li>
+<li>Go as far as possible</li>
+</ul></li>
+</ul>
+<div class="tip">
+<p>SSH</p>
+</div>
+<p> </p>
+<figure>
+<img src="comic_strip-sudo.jpg" title="comic_strip-sudo" style="width:33.0%" alt="" /><figcaption>comic_strip-sudo</figcaption>
+</figure>
+<h2 id="sociability">Sociability</h2>
+<div class="columns">
+<div class="column" style="width:95%;">
+<h3 id="task-3.1">Task 3.1</h3>
+</div><div class="column" style="width:04%;">
+<figure>
+<img src="carrot.jpg" title="carrot" style="width:100.0%" alt="" /><figcaption>level1</figcaption>
+</figure>
+</div>
+</div>
+<p>Chat with the 3 closest people to you.<br />
+Take this opportunity to help them since you almost complete your daily tasks already.</p>
+<div class="tip">
+<p>Remember to keep the smile :)</p>
+</div>
+<div class="info">
+<p>By the way can you cite the 3 fundamental values of Epitech?</p>
+</div>
+<div class="columns">
+<div class="column" style="width:95%;">
+<h3 id="task-3.2">Task 3.2</h3>
+</div><div class="column" style="width:04%;">
+<figure>
+<img src="carrot.jpg" title="carrot" style="width:100.0%" alt="" /><figcaption>level1</figcaption>
+</figure>
+</div>
+</div>
+<p>Observe your colleagues around you.<br />
+Can you spot someone looking at you? Do you know his/her name?<br />
+Go and introduce yourself, you are probably to work together very soon.</p>
+<p> </p>
+<figure>
+<img src="meme-introduce_yourself.jpeg" title="meme-introduce_yourself" style="width:67.0%" alt="" /><figcaption>meme-introduce_yourself</figcaption>
+</figure>
+<div class="footer"></div>
+</body>
+</html>
